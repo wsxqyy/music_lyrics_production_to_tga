@@ -1,4 +1,4 @@
-<a href="******">通过简体中文阅读</a>
+<a href="https://github.com/wsxqyy/music_lyrics_production_to_tga/blob/main/README.md">通过简体中文阅读</a>
 ### You can click here: [Visit the GitHub project to experience the website](https://wsxqyy.github.io/music_lyrics_production_to_tga). You can experience it on GitHub's demo site. We also welcome you to download the web version or Python script to experience it!
 
 # lrc Lyric Editor
