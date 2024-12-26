@@ -11,7 +11,7 @@ The lrc lyric editor was developed by Xueqiu during music production, aiming to 
 ### 1. Clean User Interface
 - Adopts a modern and minimalist design style, allowing users to focus on editing lyrics.
 - Features a modular design with rounded card elements to give the webpage more vitality.
-- The interface supports Chinese display, making it more suitable for Chinese users.
+![Uploading image.png…]()
 
 ### 2. Audio File Upload
 - Users can directly upload audio files, and the editor will automatically load the audio player.
@@ -44,3 +44,4 @@ You can click here: [Visit the GitHub project to experience the website](https:/
 ## Conclusion
 
 The lrc lyric editor, with its clean, intuitive interface and practical features, provides a convenient solution for lyric editing. Whether you are a music enthusiast or a professional, you can easily manage lyrics with this editor. Welcome to experience the lrc lyric editor and enjoy the fun of editing lyrics.
+### Please, give the child a star! Help a 16-year-old child! Thank you!
