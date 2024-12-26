@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="fax.ico" type="image/x-icon">
+    <link rel="icon" href="fanx.ico" type="image/x-icon">
+    <title>lrc歌词编辑器-雪球出品必属精品</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            width: 60%;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #lyricsDisplay {
+            height: 100px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+
+        #audioPlayer {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            transform: translateY(0);
+        }
+
+            button:hover {
+                background-color: #45a049;
+                transform: translateY(-2px);
+            }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none; /* 禁止调整大小 */
+        }
+
+        #controls {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>打TAG编辑器-雪球出品必属精品</h1>
+
+    <div id="controls" class="container">
+        <button onclick="playSong()">播放</button>
+        <button onclick="addTag()">打TAG</button>
+        <button onclick="rewind()">回退(2秒)</button>
+        <button onclick="exportLrc()">导出歌词</button>
+    </div>
+
+    <div class="container">
+        <label for="audioFile">上传歌曲:</label>
+        <input type="file" id="audioFile" accept="audio/*">
+    </div>
+
+    <div class="container">
+        <audio id="audioPlayer" controls></audio>
+    </div>
+
+    <div class="container">
+        <label for="lyricsInput">粘贴歌词:</label>
+        <textarea id="lyricsInput" rows="5" placeholder="请先点击'上传歌曲'，然后点击'粘贴歌词',把歌词粘贴到弹出框"></textarea>
+    </div>
+
+    <div id="lyricsDisplay" class="container">
+        <!-- 动态生成的歌词行将被添加到这里 -->
+    </div>
+
+    <script>
+        let currentLyrics = [];
+        let audioPlayer = document.getElementById('audioPlayer');
+        let lyricsInput = document.getElementById('lyricsInput');
+        let lyricsDisplay = document.getElementById('lyricsDisplay');
+
+        document.getElementById('audioFile').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                audioPlayer.src = URL.createObjectURL(file);
+            }
+        });
+
+        function playSong() {
+            audioPlayer.play();
+        }
+
+        function addTag() {
+            const currentTime = Math.floor(audioPlayer.currentTime * 1000) / 1000;
+            const lyric = currentLyrics.length < lyricsInput.value.split('\n').length ? lyricsInput.value.split('\n')[currentLyrics.length] : '';
+            currentLyrics.push({ time: currentTime, lyric: lyric });
+            updateLyricsDisplay();
+        }
+
+        function rewind() {
+            const currentTime = Math.floor(audioPlayer.currentTime * 1000) / 1000;
+            if (currentLyrics.length > 0 && currentLyrics[currentLyrics.length - 1].time > currentTime - 2) {
+                currentLyrics.pop();
+            }
+            audioPlayer.currentTime -= 2;
+            updateLyricsDisplay();
+        }
+
+        function updateLyricsDisplay() {
+            lyricsDisplay.innerHTML = '';
+            for (let i = Math.max(0, currentLyrics.length - 5); i < currentLyrics.length; i++) {
+                const { time, lyric } = currentLyrics[i];
+                const div = document.createElement('div');
+                div.textContent = `[${time.toFixed(3)}] ${lyric}`;
+                lyricsDisplay.appendChild(div);
+            }
+        }
+
+        function exportLrc() {
+            let lrcContent = '';
+            for (let i = 0; i < currentLyrics.length; i++) {
+                const { time, lyric } = currentLyrics[i];
+                lrcContent += `[${time.toFixed(3)}]${lyric}\n`;
+            }
+            const songName = document.getElementById('audioFile').files[0].name.replace(/\.\w+$/, '');
+            const blob = new Blob([lrcContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = songName + '.lrc';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
